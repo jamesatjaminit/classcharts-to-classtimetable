@@ -1,0 +1,46 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "npm:dayjs": "npm:dayjs@1.11.10",
+      "npm:dayjs@1.11.10": "npm:dayjs@1.11.10",
+      "npm:plist": "npm:plist@3.1.0",
+      "npm:plist@3.1.0": "npm:plist@3.1.0"
+    },
+    "npm": {
+      "@xmldom/xmldom@0.8.10": {
+        "integrity": "sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==",
+        "dependencies": {}
+      },
+      "base64-js@1.5.1": {
+        "integrity": "sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==",
+        "dependencies": {}
+      },
+      "dayjs@1.11.10": {
+        "integrity": "sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==",
+        "dependencies": {}
+      },
+      "plist@3.1.0": {
+        "integrity": "sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==",
+        "dependencies": {
+          "@xmldom/xmldom": "@xmldom/xmldom@0.8.10",
+          "base64-js": "base64-js@1.5.1",
+          "xmlbuilder": "xmlbuilder@15.1.1"
+        }
+      },
+      "xmlbuilder@15.1.1": {
+        "integrity": "sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==",
+        "dependencies": {}
+      }
+    }
+  },
+  "remote": {
+    "https://deno.land/x/classcharts_api@v2.7.1/mod.ts": "0ce27abbecd93a3d68656903267b2645fbf38eff76d4b292338c79bf55b60536",
+    "https://deno.land/x/classcharts_api@v2.7.1/src/core/baseClient.ts": "4a6703aba0ba257d5a3bfe00e63959f77438a73c30244a90b6c6a02761226f2f",
+    "https://deno.land/x/classcharts_api@v2.7.1/src/core/parentClient.ts": "bbed3f252a3facd54081ee2fb3d823a26d8dc484d9eeca8329d3bc732d1b2001",
+    "https://deno.land/x/classcharts_api@v2.7.1/src/core/studentClient.ts": "415a82ceed85fffb9f3c1f2edc19e39966115ef94339a5f04ffeee6f23756252",
+    "https://deno.land/x/classcharts_api@v2.7.1/src/types.ts": "24cbdbb70bb07f515138495719099a0e017a11b3d744372e0aaf0d2025997c0f",
+    "https://deno.land/x/classcharts_api@v2.7.1/src/utils/consts.ts": "daad93692cc10db8abceabffd8136c496560463c0307e7c9344fe7398e1a987f",
+    "https://deno.land/x/classcharts_api@v2.7.1/src/utils/utils.ts": "a6420c3ad9528a6005fb67f92ca6d1ded07f80ffd93fffd435fe456a78fa8f05"
+  }
+}
