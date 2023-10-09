@@ -4,7 +4,7 @@ import { ClassChartsToClassTimetable } from "./mod.ts";
 
 await new Command()
   .name("classcharts-to-classtimetable")
-  .version("0.2.0")
+  .version("0.2.1")
   .description("ClassCharts timetable converter to ClassTimetable.app")
   .option("-c, --code <code:string>", "ClassCharts code", {
     required: true,
@@ -36,7 +36,7 @@ await new Command()
       numberOfWeeks: numberOfWeeks,
       numberOfDaysInWeek: numberOfDays,
     });
-    if (!out) {
+    if (typeof out == "undefined") {
       console.log(xml);
     } else {
       const encoder = new TextEncoder();
