@@ -13,6 +13,7 @@ deno run --allow-net --allow-write https://deno.land/x/classcharts_to_classtimet
   --out Timetable.timetable
 ```
 
+For a list of all options use:
 ```bash
 deno run https://deno.land/x/classcharts_to_classtimetable/cli.ts --help
 ```
