@@ -3,7 +3,21 @@
 A small Deno library to convert a ClassCharts timetable to a
 [ClassTimetable](https://classtimetable.app/) export.
 
-## Usage
+## CLI Usage
+
+```bash
+deno run --allow-net --allow-write https://deno.land/x/classcharts_to_classtimetable/cli.ts \
+  --code "StudentCodeHere" \
+  --dob "DD/MM/YYYY" \
+  --number-of-weeks 2 \
+  --out Timetable.timetable
+```
+
+```bash
+deno run https://deno.land/x/classcharts_to_classtimetable/cli.ts --help
+```
+
+## Library Usage
 
 ```typescript
 import { ClassChartsToClassTimetable } from "https://deno.land/x/classcharts_to_classtimetable/mod.ts";
