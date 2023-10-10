@@ -34,6 +34,20 @@ export interface GenerateTimetableOptions {
      */
     info?: string;
   };
+  generators?: {
+    /**
+     * @param lessonId Unique identifier for lesson
+     * @returns Object containing RGB values
+     */
+    colour?: (lessonId: string) => {
+      r: number;
+      g: number;
+      b: number;
+    };
+    lessonBody?: (
+      lesson: Lesson,
+    ) => NonNullable<Required<GenerateTimetableOptions["templates"]>>;
+  };
 }
 
 export interface ClassChartsToClassTimetableOptions {
@@ -61,7 +75,7 @@ export class ClassChartsToClassTimetable {
    * @returns Nested array of lessons. One element for each day.
    */
   private async _getAllLessons(
-    options: Omit<GenerateTimetableOptions, "templates">,
+    options: Omit<GenerateTimetableOptions, "templates" | "generators">,
   ) {
     try {
       await this.StudentClient.login();
@@ -245,6 +259,7 @@ export class ClassChartsToClassTimetable {
       numberOfWeeks: options.numberOfWeeks,
       numberOfDaysInWeek: options.numberOfDaysInWeek,
       templates: options.templates,
+      generators: options.generators,
     });
     return xml;
   }
