@@ -1,4 +1,5 @@
 import { Command } from "https://deno.land/x/cliffy@v1.0.0-rc.3/command/mod.ts";
+import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/mod.ts";
 
 import { ClassChartsToClassTimetable } from "./mod.ts";
 
@@ -29,6 +30,7 @@ await new Command()
   .option("-t, --title-template <template:string>", "Lessson title template")
   .option("-i, --info-template <template:string>", "Lesson info template")
   .option("-o, --out <path:string>", "Output to file")
+  .option("-s, --silent", "Suppress console messages")
   .action(
     async (
       {
@@ -36,9 +38,10 @@ await new Command()
         dob,
         numberOfWeeks,
         numberOfDays,
-        out,
         titleTemplate,
         infoTemplate,
+        out,
+        silent,
       },
       ..._args
     ) => {
@@ -59,6 +62,11 @@ await new Command()
       } else {
         const encoder = new TextEncoder();
         Deno.writeFile(out, encoder.encode(xml));
+        if (!silent) {
+          console.log(
+            colors.green("Success!") + " Written timetable to " + out,
+          );
+        }
       }
     },
   )
