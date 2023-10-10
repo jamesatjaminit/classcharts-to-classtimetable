@@ -44,6 +44,11 @@ export interface GenerateTimetableOptions {
       g: number;
       b: number;
     };
+    /**
+     * Custom function to generate lesson body, takes priority over templates
+     * @param lesson Lesson object
+     * @returns Object containing lesson title and body
+     */
     lessonBody?: (
       lesson: Lesson,
     ) => NonNullable<Required<GenerateTimetableOptions["templates"]>>;
@@ -188,10 +193,12 @@ export class ClassChartsToClassTimetable {
     const coloursMap = new Map<string, { r: number; g: number; b: number }>();
     for (const day of lessonsObject) {
       for (const lesson of day) {
-        const lessonText = this._generateLessonTextFromLesson(
-          lesson,
-          options.templates ?? {},
-        );
+        const lessonText = options.generators?.lessonBody
+          ? options.generators.lessonBody(lesson)
+          : this._generateLessonTextFromLesson(
+            lesson,
+            options.templates ?? {},
+          );
         jsonObject.WeekEvents.push({
           dayNum: dayNumber - 1,
           weekNum: weekNumber - 1,
