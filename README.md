@@ -43,7 +43,7 @@ Deno.writeFile(`Timetable.timetable`, encoder.encode(xml));
 
 ## Templates
 
-Templates can be used to customise the output of the timetable. The defaults are:
+Templates can be used to customise the output of each lesson. The defaults are:
 
 - Title: "%s - %r"
   - E.g. "Computer Science - 1.1"
