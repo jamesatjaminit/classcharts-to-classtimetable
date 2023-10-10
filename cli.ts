@@ -5,7 +5,6 @@ import { ClassChartsToClassTimetable } from "./mod.ts";
 
 await new Command()
   .name("classcharts-to-classtimetable")
-  .version("0.2.1")
   .description("ClassCharts timetable converter to ClassTimetable.app")
   .option("-c, --code <code:string>", "ClassCharts code", {
     required: true,
