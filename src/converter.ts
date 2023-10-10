@@ -30,7 +30,7 @@ export interface GenerateTimetableOptions {
     title?: string;
     /**
      * Info template
-     * @default "%t\\n%pn"
+     * @default "%t\n%pn"
      */
     info?: string;
   };
@@ -119,7 +119,7 @@ export class ClassChartsToClassTimetable {
             templates[key] = "%s - %r";
             break;
           case "info":
-            templates[key] = "%t\\n%pn";
+            templates[key] = "%t\n%pn";
             break;
         }
       }

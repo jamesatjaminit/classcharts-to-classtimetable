@@ -47,7 +47,7 @@ Templates can be used to customise the output of each lesson. The defaults are:
 
 - Title: "%s - %r"
   - E.g. "Computer Science - 1.1"
-- Info: "%t\\n%pn"
+- Info: "%t\n%pn"
   - E.g. "Mr. Smith\nPeriod 1"
 
 ### Available Variables
