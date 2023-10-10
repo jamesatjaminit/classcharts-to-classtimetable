@@ -26,21 +26,40 @@ await new Command()
       default: 5,
     },
   )
+  .option("-t, --title-template <template:string>", "Lessson title template")
+  .option("-i, --info-template <template:string>", "Lesson info template")
   .option("-o, --out <path:string>", "Output to file")
-  .action(async ({ code, dob, numberOfWeeks, numberOfDays, out }, ..._args) => {
-    const client = new ClassChartsToClassTimetable({
-      code: code,
-      dateOfBirth: dob,
-    });
-    const xml = await client.generateTimetable({
-      numberOfWeeks: numberOfWeeks,
-      numberOfDaysInWeek: numberOfDays,
-    });
-    if (typeof out == "undefined") {
-      console.log(xml);
-    } else {
-      const encoder = new TextEncoder();
-      Deno.writeFile(out, encoder.encode(xml));
-    }
-  })
+  .action(
+    async (
+      {
+        code,
+        dob,
+        numberOfWeeks,
+        numberOfDays,
+        out,
+        titleTemplate,
+        infoTemplate,
+      },
+      ..._args
+    ) => {
+      const client = new ClassChartsToClassTimetable({
+        code: code,
+        dateOfBirth: dob,
+      });
+      const xml = await client.generateTimetable({
+        numberOfWeeks: numberOfWeeks,
+        numberOfDaysInWeek: numberOfDays,
+        templates: {
+          title: titleTemplate,
+          info: infoTemplate,
+        },
+      });
+      if (typeof out == "undefined") {
+        console.log(xml);
+      } else {
+        const encoder = new TextEncoder();
+        Deno.writeFile(out, encoder.encode(xml));
+      }
+    },
+  )
   .parse(Deno.args);

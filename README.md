@@ -31,8 +31,42 @@ const client = new ClassChartsToClassTimetable({
 const xml = await client.generateTimetable({
   numberOfWeeks: 2,
   numberOfDaysInWeek: 5,
+  templates: {
+    title: "",
+    info: "",
+  } // Optional templates, see below
 });
 
 const encoder = new TextEncoder();
 Deno.writeFile(`Timetable.timetable`, encoder.encode(xml));
 ```
+
+## Templates
+
+Templates can be used to customise the output of the timetable. The defaults are:
+
+- Title: "%s - %r"
+  - E.g. "Computer Science - 1.1"
+- Info: "%t\\n%pn"
+  - E.g. "Mr. Smith\nPeriod 1"
+
+### Available Variables
+
+| Variable | Description           |
+| -------- | --------------------- |
+| %t       | Teacher name          |
+| %n       | Lesson name           |
+| %s       | Subject name          |
+| %a       | Is alternative lesson |
+| %pn      | Period name           |
+| %pnum    | Period number         |
+| %r       | Room name             |
+| %d       | Lesson date           |
+| %st      | Lesson start time     |
+| %et      | Lesson end time       |
+| %k       | Lesson key            |
+| %na      | Lesson note abstract  |
+| %no      | Lesson note           |
+| %pna     | Pupil note abstract   |
+| %pnote   | Pupil note            |
+| $pnr     | Pupil note raw        |
