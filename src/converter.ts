@@ -34,6 +34,33 @@ export interface GenerateTimetableOptions {
      */
     info?: string;
   };
+  /**
+   * Custom generators functions to customise the output of each lesson.
+   */
+  generators?: {
+    /**
+     * Custom function to generate lesson colour.
+     * @param lessonTitle Lesson title
+     * @returns Object containing RGB values. All values should be between 0 and 1.
+     */
+    colour?: (lessonTitle: string) => {
+      r: number;
+      g: number;
+      b: number;
+    };
+    /**
+     * Custom function to generate lesson body. This function takes priority over templates.
+     * @param lesson Lesson object
+     * @returns Object containing lesson title and body
+     * @see templates
+     */
+    lessonBody?: (
+      lesson: Lesson,
+    ) => {
+      title: string;
+      info: string;
+    };
+  };
 }
 
 export interface ClassChartsToClassTimetableOptions {
@@ -61,7 +88,7 @@ export class ClassChartsToClassTimetable {
    * @returns Nested array of lessons. One element for each day.
    */
   private async _getAllLessons(
-    options: Omit<GenerateTimetableOptions, "templates">,
+    options: Omit<GenerateTimetableOptions, "templates" | "generators">,
   ) {
     try {
       await this.StudentClient.login();
@@ -174,10 +201,12 @@ export class ClassChartsToClassTimetable {
     const coloursMap = new Map<string, { r: number; g: number; b: number }>();
     for (const day of lessonsObject) {
       for (const lesson of day) {
-        const lessonText = this._generateLessonTextFromLesson(
-          lesson,
-          options.templates ?? {},
-        );
+        const lessonText = typeof options.generators?.lessonBody === "function"
+          ? options.generators.lessonBody(lesson)
+          : this._generateLessonTextFromLesson(
+            lesson,
+            options.templates ?? {},
+          );
         jsonObject.WeekEvents.push({
           dayNum: dayNumber - 1,
           weekNum: weekNumber - 1,
@@ -190,11 +219,16 @@ export class ClassChartsToClassTimetable {
           info: lessonText.info,
         });
         if (!coloursMap.has(lessonText.title)) {
-          coloursMap.set(lessonText.title, {
-            r: getRandomInt(0, 255) / 255,
-            g: getRandomInt(0, 255) / 255,
-            b: getRandomInt(0, 255) / 255,
-          });
+          coloursMap.set(
+            lessonText.title,
+            typeof options.generators?.colour === "function"
+              ? options.generators.colour(lessonText.title)
+              : {
+                r: getRandomInt(0, 255) / 255,
+                g: getRandomInt(0, 255) / 255,
+                b: getRandomInt(0, 255) / 255,
+              },
+          );
         }
       }
       dayNumber++;
@@ -245,6 +279,7 @@ export class ClassChartsToClassTimetable {
       numberOfWeeks: options.numberOfWeeks,
       numberOfDaysInWeek: options.numberOfDaysInWeek,
       templates: options.templates,
+      generators: options.generators,
     });
     return xml;
   }
