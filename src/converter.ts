@@ -138,7 +138,7 @@ export class ClassChartsToClassTimetable {
     templates: NonNullable<GenerateTimetableOptions["templates"]>,
   ) {
     const keys = ["title", "info"] as const;
-    const returned: typeof templates = {};
+    const returned: Record<string, string> = {};
     for (const key of keys) {
       if (typeof templates[key] == "undefined") {
         switch (key) {
@@ -168,7 +168,7 @@ export class ClassChartsToClassTimetable {
         .replaceAll("%pnote", lesson.pupil_note)
         .replaceAll("%pnr", lesson.pupil_note_raw);
     }
-    return returned as Required<typeof returned>;
+    return returned as Required<typeof templates>;
   }
   /**
    * Generates a ClassTimetable XML export from a nested array of lessons.
