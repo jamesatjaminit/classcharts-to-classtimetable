@@ -201,7 +201,7 @@ export class ClassChartsToClassTimetable {
     const coloursMap = new Map<string, { r: number; g: number; b: number }>();
     for (const day of lessonsObject) {
       for (const lesson of day) {
-        const lessonText = options.generators?.lessonBody
+        const lessonText = typeof options.generators?.lessonBody === "function"
           ? options.generators.lessonBody(lesson)
           : this._generateLessonTextFromLesson(
             lesson,
@@ -221,7 +221,7 @@ export class ClassChartsToClassTimetable {
         if (!coloursMap.has(lessonText.title)) {
           coloursMap.set(
             lessonText.title,
-            options.generators?.colour
+            typeof options.generators?.colour === "function"
               ? options.generators.colour(lessonText.title)
               : {
                 r: getRandomInt(0, 255) / 255,
