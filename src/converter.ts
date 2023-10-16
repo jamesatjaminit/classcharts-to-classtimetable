@@ -36,16 +36,17 @@ export interface GenerateTimetableOptions {
   };
   generators?: {
     /**
-     * @param lessonId Unique identifier for lesson
-     * @returns Object containing RGB values
+     * Custom function to generate lesson colour.
+     * @param lessonTitle Lesson title
+     * @returns Object containing RGB values. All values should be between 0 and 1.
      */
-    colour?: (lessonId: string) => {
+    colour?: (lessonTitle: string) => {
       r: number;
       g: number;
       b: number;
     };
     /**
-     * Custom function to generate lesson body, takes priority over templates
+     * Custom function to generate lesson body. This function takes priority over templates.
      * @param lesson Lesson object
      * @returns Object containing lesson title and body
      */
@@ -211,11 +212,16 @@ export class ClassChartsToClassTimetable {
           info: lessonText.info,
         });
         if (!coloursMap.has(lessonText.title)) {
-          coloursMap.set(lessonText.title, {
-            r: getRandomInt(0, 255) / 255,
-            g: getRandomInt(0, 255) / 255,
-            b: getRandomInt(0, 255) / 255,
-          });
+          coloursMap.set(
+            lessonText.title,
+            options.generators?.colour
+              ? options.generators.colour(lessonText.title)
+              : {
+                r: getRandomInt(0, 255) / 255,
+                g: getRandomInt(0, 255) / 255,
+                b: getRandomInt(0, 255) / 255,
+              },
+          );
         }
       }
       dayNumber++;
