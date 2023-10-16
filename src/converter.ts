@@ -34,6 +34,9 @@ export interface GenerateTimetableOptions {
      */
     info?: string;
   };
+  /**
+   * Custom generators functions to customise the output of each lesson.
+   */
   generators?: {
     /**
      * Custom function to generate lesson colour.
@@ -49,10 +52,14 @@ export interface GenerateTimetableOptions {
      * Custom function to generate lesson body. This function takes priority over templates.
      * @param lesson Lesson object
      * @returns Object containing lesson title and body
+     * @see templates
      */
     lessonBody?: (
       lesson: Lesson,
-    ) => NonNullable<Required<GenerateTimetableOptions["templates"]>>;
+    ) => {
+      title: string;
+      info: string;
+    };
   };
 }
 
