@@ -133,6 +133,12 @@ export class ClassChartsToClassTimetable {
     }
     return lessons;
   }
+  /**
+   * Generates a lesson text object from a lesson and template object.
+   * @param lesson Lesson to generate text from
+   * @param templates Templates to use to generate text
+   * @returns Template object
+   */
   private _generateLessonTextFromLesson(
     lesson: Lesson,
     templates: NonNullable<GenerateTimetableOptions["templates"]>,
