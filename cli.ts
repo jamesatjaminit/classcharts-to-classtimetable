@@ -4,7 +4,7 @@ import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/mod.ts";
 import { ClassChartsToClassTimetable } from "./mod.ts";
 
 await new Command()
-  .name("classcharts-to-classtimetable")
+  .name("classcharts_to_classtimetable")
   .description("ClassCharts timetable converter to ClassTimetable.app")
   .option("-c, --code <code:string>", "ClassCharts code", {
     required: true,
