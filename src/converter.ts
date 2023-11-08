@@ -63,6 +63,17 @@ export interface GenerateTimetableOptions {
   };
 }
 
+/**
+ * Type of GenerateTimetableOptions with default values filled in.
+ * Used in internal functions which are called by the public generateTimetable() function.
+ * Since generateTimetable() sets default values.
+ */
+type DefaultedGenerateTimetableOptions = GenerateTimetableOptions & {
+  numberOfDaysInWeek: NonNullable<
+    GenerateTimetableOptions["numberOfDaysInWeek"]
+  >;
+};
+
 export interface ClassChartsToClassTimetableOptions {
   /**
    * ClassCharts student code. Usually given by the student's school.
@@ -88,7 +99,10 @@ export class ClassChartsToClassTimetable {
    * @returns Nested array of lessons. One element for each day.
    */
   private async _getAllLessons(
-    options: Omit<GenerateTimetableOptions, "templates" | "generators">,
+    options: Omit<
+      DefaultedGenerateTimetableOptions,
+      "templates" | "generators"
+    >,
   ) {
     try {
       await this.StudentClient.login();
@@ -96,9 +110,6 @@ export class ClassChartsToClassTimetable {
       throw new Error(
         "Failed to login to ClassCharts. Check your login details",
       );
-    }
-    if (!options.numberOfDaysInWeek) {
-      options.numberOfDaysInWeek = 5;
     }
     const startDate = options.startDate
       ? dayjs(options.startDate)
@@ -115,18 +126,16 @@ export class ClassChartsToClassTimetable {
         dayNumber <= options.numberOfDaysInWeek;
         dayNumber++
       ) {
-        const currentDay = [];
         try {
           const currentLessons = await this.StudentClient.getLessons({
             date: currentDate.format("YYYY-MM-DD"),
           });
-          for (const lesson of currentLessons.data) {
-            currentDay.push(lesson);
-          }
+          const currentDay = currentLessons.data;
+          lessons.push(currentDay);
         } catch {
+          lessons.push([]);
           // TODO: warn?
         }
-        lessons.push(currentDay);
         currentDate = currentDate.add(1, "day");
       }
       currentDate = currentDate.add(1, "week").startOf("week");
@@ -192,11 +201,8 @@ export class ClassChartsToClassTimetable {
    */
   private _lessonsToXml(
     lessonsObject: LessonsObject,
-    options: Omit<GenerateTimetableOptions, "startDate">,
+    options: Omit<DefaultedGenerateTimetableOptions, "startDate">,
   ) {
-    if (!options.numberOfDaysInWeek) {
-      options.numberOfDaysInWeek = 5;
-    }
     const jsonObject = {
       Settings: {
         // deno-lint-ignore no-explicit-any
@@ -285,6 +291,9 @@ export class ClassChartsToClassTimetable {
   public async generateTimetable(
     options: GenerateTimetableOptions,
   ) {
+    if (!options.numberOfDaysInWeek) {
+      options.numberOfDaysInWeek = 5;
+    }
     const allLessons = await this._getAllLessons({
       startDate: options.startDate,
       numberOfWeeks: options.numberOfWeeks,
