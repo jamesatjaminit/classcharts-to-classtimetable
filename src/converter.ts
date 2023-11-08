@@ -156,23 +156,31 @@ export class ClassChartsToClassTimetable {
             break;
         }
       }
+      /**
+       * Generates a RegExp to match a given template string.
+       * Accounts for when the template is escaped with a backslash.
+       * @returns RegExp
+       */
+      const re = (template: string) => {
+        return RegExp(`/(?<!\\)${template}/g`);
+      };
       returned[key] = templates[key]!
-        .replaceAll("%t", lesson.teacher_name)
-        .replaceAll("%n", lesson.lesson_name)
-        .replaceAll("%s", lesson.subject_name)
-        .replaceAll("%a", String(lesson.is_alternative_lesson))
-        .replaceAll("%pn", lesson.period_name)
-        .replaceAll("%pnum", lesson.period_number)
-        .replaceAll("%r", lesson.room_name)
-        .replaceAll("%d", lesson.date)
-        .replaceAll("%st", lesson.start_time)
-        .replaceAll("%et", lesson.end_time)
-        .replaceAll("%k", String(lesson.key))
-        .replaceAll("%na", lesson.note_abstract)
-        .replaceAll("%no", lesson.note)
-        .replaceAll("%pna", lesson.pupil_note_abstract)
-        .replaceAll("%pnote", lesson.pupil_note)
-        .replaceAll("%pnr", lesson.pupil_note_raw);
+        .replaceAll(re("%t"), lesson.teacher_name)
+        .replaceAll(re("%n"), lesson.lesson_name)
+        .replaceAll(re("%s"), lesson.subject_name)
+        .replaceAll(re("%a"), String(lesson.is_alternative_lesson))
+        .replaceAll(re("%pn"), lesson.period_name)
+        .replaceAll(re("%pnum"), lesson.period_number)
+        .replaceAll(re("%r"), lesson.room_name)
+        .replaceAll(re("%d"), lesson.date)
+        .replaceAll(re("%st"), lesson.start_time)
+        .replaceAll(re("%et"), lesson.end_time)
+        .replaceAll(re("%k"), String(lesson.key))
+        .replaceAll(re("%na"), lesson.note_abstract)
+        .replaceAll(re("%no"), lesson.note)
+        .replaceAll(re("%pna"), lesson.pupil_note_abstract)
+        .replaceAll(re("%pnote"), lesson.pupil_note)
+        .replaceAll(re("%pnr"), lesson.pupil_note_raw);
     }
     return returned as Required<typeof templates>;
   }
@@ -207,7 +215,7 @@ export class ClassChartsToClassTimetable {
     const coloursMap = new Map<string, { r: number; g: number; b: number }>();
     for (const day of lessonsObject) {
       for (const lesson of day) {
-        const lessonText = typeof options.generators?.lessonBody === "function"
+        const lessonText = typeof options.generators?.lessonBody === "function" // If a custom lesson body generator is provided, use it
           ? options.generators.lessonBody(lesson)
           : this._generateLessonTextFromLesson(
             lesson,
@@ -227,7 +235,7 @@ export class ClassChartsToClassTimetable {
         if (!coloursMap.has(lessonText.title)) {
           coloursMap.set(
             lessonText.title,
-            typeof options.generators?.colour === "function"
+            typeof options.generators?.colour === "function" // If a custom colour generator is provided, use it
               ? options.generators.colour(lessonText.title)
               : {
                 r: getRandomInt(0, 255) / 255,
@@ -248,8 +256,9 @@ export class ClassChartsToClassTimetable {
         coloursMap.get(lessonTitle)!,
       );
     }
-    const plistXml = String(plist.build(jsonObject, { pretty: false }));
-    return plistXml.replaceAll(/.123456789/g, "");
+    const plistXml = String(plist.build(jsonObject, { pretty: false }))
+      .replaceAll(/.123456789/g, ""); // Remove the hacky workaround (see above)
+    return plistXml;
   }
 
   /**

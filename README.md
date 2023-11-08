@@ -14,6 +14,7 @@ deno run --allow-net --allow-write https://deno.land/x/classcharts_to_classtimet
 ```
 
 For a list of all options use:
+
 ```bash
 deno run https://deno.land/x/classcharts_to_classtimetable/cli.ts --help
 ```
@@ -34,7 +35,7 @@ const xml = await client.generateTimetable({
   templates: {
     title: "",
     info: "",
-  } // Optional templates, see below
+  }, // Optional templates, see below
 });
 
 const encoder = new TextEncoder();
