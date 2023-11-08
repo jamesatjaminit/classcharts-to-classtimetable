@@ -70,4 +70,4 @@ Templates can be used to customise the output of each lesson. The defaults are:
 | %no      | Lesson note           |
 | %pna     | Pupil note abstract   |
 | %pnote   | Pupil note            |
-| $pnr     | Pupil note raw        |
+| %pnr     | Pupil note raw        |
